@@ -26,35 +26,40 @@ namespace EtrianOdysseyPc
     public partial class MainWindow : Window
     {
         private ModelManager _modelManager;
+        private ModelContext _dataContext = new ModelContext();
 
         public MainWindow()
         {
-            EventManager.RegisterRoutedEvent("Loaded", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Viewport3D));
+            //EventManager.RegisterRoutedEvent("Loaded", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Viewport3D));
+
+            DataContext = _dataContext;
             InitializeComponent();
 
-            _modelManager = new ModelManager("Ressources\\Models");
-            var m = _modelManager.RetrieveModel("testObj");
-            group.Children.Add(m);
+            _dataContext.LabyrinthModelGroup.Children.Add(GetModel());
 
-            var rot = new AxisAngleRotation3D(new Vector3D(0, -1, -1), 90);
-            var transform = new RotateTransform3D();
-            transform.Rotation = rot;
-            m.Transform = transform;
+            //_modelManager = new ModelManager("Ressources\\Models");
+            //var m = _modelManager.RetrieveModel("testObj");
+            //_dataContext.LabyrinthModelGroup.Children.Add(m);
 
-            var ns = NameScope.GetNameScope(this);
-            ns.RegisterName("testObjAnim", rot);
+            //var rot = new AxisAngleRotation3D(new Vector3D(0, -1, -1), 90);
+            //var transform = new RotateTransform3D();
+            //transform.Rotation = rot;
+            //m.Transform = transform;
 
-            var anim = new DoubleAnimation(-40, 40, new Duration(TimeSpan.FromMilliseconds(1000)));
-            // TODO: name animations and get them from files
-            Storyboard.SetTargetName(anim, "testObjAnim");
-            Storyboard.SetTargetProperty(anim, new PropertyPath("Angle"));
+            //var ns = NameScope.GetNameScope(this);
+            //ns.RegisterName("testObjAnim", rot);
 
-            var trigger = new BeginStoryboard();
-            trigger.Storyboard = new Storyboard() { Duration = new Duration(TimeSpan.FromMilliseconds(100)), RepeatBehavior = new RepeatBehavior(1) };
-            trigger.Storyboard.Children.Add(anim);
-            trigger.Storyboard.Completed += Storyboard_Completed;
+            //var anim = new DoubleAnimation(-40, 40, new Duration(TimeSpan.FromMilliseconds(1000)));
+            //// TODO: name animations and get them from files
+            //Storyboard.SetTargetName(anim, "testObjAnim");
+            //Storyboard.SetTargetProperty(anim, new PropertyPath("Angle"));
 
-            trigger.Storyboard.Begin();
+            //var trigger = new BeginStoryboard();
+            //trigger.Storyboard = new Storyboard() { Duration = new Duration(TimeSpan.FromMilliseconds(100)), RepeatBehavior = new RepeatBehavior(1) };
+            //trigger.Storyboard.Children.Add(anim);
+            //trigger.Storyboard.Completed += Storyboard_Completed;
+
+            //trigger.Storyboard.Begin();
 
             //var loadedTrigger = new EventTrigger(EventManager.GetRoutedEvents().First(x => x.Name == "Loaded" && x.OwnerType == typeof(Viewport3D)));
             //loadedTrigger.Actions.Add(trigger);
@@ -62,9 +67,40 @@ namespace EtrianOdysseyPc
             //labyrinthView.Triggers.Add(loadedTrigger);
         }
 
-        private void Storyboard_Completed(object sender, EventArgs e)
+        private GeometryModel3D GetModel()
         {
-            Trace.WriteLine("SB completed.");
+            var mesh = new MeshGeometry3D();
+            mesh.Positions.Add(new Point3D(0, 0, 1));
+            mesh.Positions.Add(new Point3D(0, 1, 1));
+            mesh.Positions.Add(new Point3D(1, 0, 1));
+            mesh.Positions.Add(new Point3D(1, 1, 1));
+            mesh.TriangleIndices.Add(0);
+            mesh.TriangleIndices.Add(2);
+            mesh.TriangleIndices.Add(1);
+            mesh.TriangleIndices.Add(2);
+            mesh.TriangleIndices.Add(1);
+            mesh.TriangleIndices.Add(3);
+
+            var model = new GeometryModel3D(mesh, new DiffuseMaterial(Brushes.YellowGreen));
+            return model;
         }
+
+        private void Grid_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                _dataContext.LabyrinthCam.Position -= new Vector3D(0, 0, 1);
+            }
+        }
+
+        private void LabyrinthView_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
+
+        //private void Storyboard_Completed(object sender, EventArgs e)
+        //{
+        //    Trace.WriteLine("SB completed.");
+        //}
     }
 }

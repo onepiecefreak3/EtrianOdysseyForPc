@@ -5,25 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EtrianOdysseyPc"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid Background="Black">
+        Title="MainWindow" Height="450" Width="800"
+        KeyUp="Grid_KeyUp">
+    <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="20px" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Viewport3D x:Name="labyrinthView" Grid.Row="1">
+        <TextBox Background="Black" Foreground="White" Text="{Binding LabyrinthCam.Position}" />
+        <Viewport3D x:Name="labyrinthView" Grid.Row="2" MouseDown="LabyrinthView_MouseDown">
             <Viewport3D.Camera>
-                <PerspectiveCamera x:Name="camera" FarPlaneDistance="50"
-
-        NearPlaneDistance="0" LookDirection="0,0,-10" UpDirection="0,1,0"
-
-            Position="0,0,5" FieldOfView="45" />
+                <PerspectiveCamera Position="0.5 0.5 -3" LookDirection="0 0 1" FieldOfView="45">
+                </PerspectiveCamera>
             </Viewport3D.Camera>
             <ModelVisual3D x:Name="model">
                 <ModelVisual3D.Content>
-                    <Model3DGroup x:Name="group">
-                        <AmbientLight Color="DarkGray" />
-                        <DirectionalLight Color="White" Direction="-5,-5,-7" />
+                    <Model3DGroup>
+                        <GeometryModel3D>
+                            <GeometryModel3D.Geometry>
+                                <MeshGeometry3D Positions="0,0,1 0,1,1 1,0,1 1,1,1" 
+                                                TriangleIndices="0 1 2 2 1 3"></MeshGeometry3D>
+                            </GeometryModel3D.Geometry>
+                            <GeometryModel3D.Material>
+                                <DiffuseMaterial Brush="Yellow"></DiffuseMaterial>
+                            </GeometryModel3D.Material>
+                            <GeometryModel3D.BackMaterial>
+                                <DiffuseMaterial Color="YellowGreen"></DiffuseMaterial>
+                            </GeometryModel3D.BackMaterial>
+                        </GeometryModel3D>
+                        <!--<AmbientLight Color="White"></AmbientLight>-->
+                        <PointLight Color="White" Position="0 0 0.5"></PointLight>
                     </Model3DGroup>
                 </ModelVisual3D.Content>
             </ModelVisual3D>

@@ -73,6 +73,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelContext.cs" />
     <Compile Include="Models\EOM.cs" />
     <Compile Include="Models\ModelManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -104,6 +105,7 @@
     <Content Include="Lib\Komponent.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Contexts\" />
     <Folder Include="Ressources\Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
