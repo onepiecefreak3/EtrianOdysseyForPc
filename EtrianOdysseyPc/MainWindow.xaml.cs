@@ -1,10 +1,13 @@
-﻿using EtrianOdysseyPc.Managers;
+﻿using EtrianOdysseyPc.Interfaces;
+using EtrianOdysseyPc.Managers;
 using EtrianOdysseyPc.Models;
+using EtrianOdysseyPc.UIElements;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,17 +29,21 @@ namespace EtrianOdysseyPc
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ModelManager _modelManager;
-        private ModelContext _dataContext = new ModelContext();
+        private IUiElement _uiElement;
 
         public MainWindow()
         {
-            //EventManager.RegisterRoutedEvent("Loaded", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Viewport3D));
+            _uiElement = new MenuElement();
+            _uiElement.NewUiElement += _uiElement_NewUiElement;
 
-            DataContext = _dataContext;
+            DataContext = _uiElement.DataContext;
             InitializeComponent();
 
-            _dataContext.LabyrinthModelGroup.Children.Add(GetModel());
+            //EventManager.RegisterRoutedEvent("Loaded", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Viewport3D));
+
+            //DataContext = _dataContext;
+
+            //_dataContext.LabyrinthModelGroup.Children.Add(GetModel());
 
             //_modelManager = new ModelManager("Ressources\\Models");
             //var m = _modelManager.RetrieveModel("testObj");
@@ -68,35 +75,39 @@ namespace EtrianOdysseyPc
             //labyrinthView.Triggers.Add(loadedTrigger);
         }
 
-        private GeometryModel3D GetModel()
+        private void _uiElement_NewUiElement(object sender, NewUiElementEventArgs e)
         {
-            var mesh = new MeshGeometry3D();
-            mesh.Positions.Add(new Point3D(0, 0, 1));
-            mesh.Positions.Add(new Point3D(0, 1, 1));
-            mesh.Positions.Add(new Point3D(1, 0, 1));
-            mesh.Positions.Add(new Point3D(1, 1, 1));
-            mesh.TriangleIndices.Add(0);
-            mesh.TriangleIndices.Add(2);
-            mesh.TriangleIndices.Add(1);
-            mesh.TriangleIndices.Add(2);
-            mesh.TriangleIndices.Add(1);
-            mesh.TriangleIndices.Add(3);
-
-            var model = new GeometryModel3D(mesh, new DiffuseMaterial(Brushes.YellowGreen));
-            return model;
+            _uiElement = e.UiElement;
+            _uiElement.NewUiElement += _uiElement_NewUiElement;
+            DataContext = _uiElement.DataContext;
         }
+
+        //private GeometryModel3D GetModel()
+        //{
+        //    var mesh = new MeshGeometry3D();
+        //    mesh.Positions.Add(new Point3D(0, 0, 1));
+        //    mesh.Positions.Add(new Point3D(0, 1, 1));
+        //    mesh.Positions.Add(new Point3D(1, 0, 1));
+        //    mesh.Positions.Add(new Point3D(1, 1, 1));
+        //    mesh.TriangleIndices.Add(0);
+        //    mesh.TriangleIndices.Add(2);
+        //    mesh.TriangleIndices.Add(1);
+        //    mesh.TriangleIndices.Add(2);
+        //    mesh.TriangleIndices.Add(1);
+        //    mesh.TriangleIndices.Add(3);
+
+        //    var model = new GeometryModel3D(mesh, new DiffuseMaterial(Brushes.YellowGreen));
+        //    return model;
+        //}
 
         private void Grid_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
-            {
-                _dataContext.LabyrinthCam.Position -= new Vector3D(0, 0, 1);
-            }
-        }
+            Task.Run(() => _uiElement.PressKey(e));
 
-        private void LabyrinthView_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            
+            //if (e.Key == Key.Return)
+            //{
+            //    _dataContext.LabyrinthCam.Position -= new Vector3D(0, 0, 1);
+            //}
         }
 
         //private void Storyboard_Completed(object sender, EventArgs e)
