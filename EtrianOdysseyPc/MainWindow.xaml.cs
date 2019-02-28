@@ -1,4 +1,5 @@
-﻿using EtrianOdysseyPc.Models;
+﻿using EtrianOdysseyPc.Managers;
+using EtrianOdysseyPc.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

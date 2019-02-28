@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EtrianOdysseyPc.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
-namespace EtrianOdysseyPc.Models
+namespace EtrianOdysseyPc.Managers
 {
     public class ModelManager
     {
