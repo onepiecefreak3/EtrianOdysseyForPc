@@ -1,4 +1,8 @@
-﻿using System;
+﻿using EtrianOdysseyPc.Events;
+using EtrianOdysseyPc.Interfaces;
+using EtrianOdysseyPc.Models;
+using Komponent.IO;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,8 +30,69 @@ namespace EtrianOdysseyPc.Providers
         private void LoadLabyrinth(string file)
         {
             // TODO: Load labyrinth
+            using (var br = new BinaryReaderX(File.OpenRead(file)))
+            {
+                // Read first half
+                var labFile = br.ReadStruct<EOL>();
+
+                // Read event part
+                var evts = new Dictionary<int, IEvent>();
+                var evtCoords = new Dictionary<int, (byte x, byte y)>();
+                for (int i = 0; i < labFile.evtHeader.eventCount; i++)
+                {
+                    var evtId = br.ReadInt32();
+                    var x = br.ReadByte();
+                    var y = br.ReadByte();
+
+                    var cond = br.ReadStruct<ActivateCondition>();
+                    var type = br.ReadStruct<EventType>();
+
+                    var parentId = br.ReadInt32();
+                    if (parentId <= -1)
+                        evtCoords.Add(evtId, (x, y));
+
+                    string flag;
+                    if (cond == ActivateCondition.OnFlag)
+                    {
+                        var length = br.ReadByte();
+                        flag = br.ReadString(length, Encoding.UTF8);
+                    }
+
+                    switch (type)
+                    {
+                        case EventType.Text:
+                            var textLength = br.ReadInt32();
+                            var text = br.ReadString(textLength, Encoding.UTF8);
+                            evts.Add(evtId, new TextEvent(text, cond, null));
+                            break;
+                        default:
+                            throw new InvalidOperationException($"Unknown event type {type}");
+                    }
+                }
+
+                // Create cells array
+                _cells = new Cell[labFile.cells.cellCount];
+                for (int i = 0; i < _cells.Length; i++)
+                {
+                    var cellInfo = labFile.cells.cellInfos[i];
+                    _cells[i] = new Cell(cellInfo.x, cellInfo.y, cellInfo.isSolid);
+
+                    var cellEvents = evtCoords.Where(x => x.Value.x == cellInfo.x && x.Value.y == cellInfo.y).ToList();
+                    if(cellEvents.Any())
+                    {
+                        var finalEvts = new List<IEvent>();
+                        foreach(var evt in cellEvents)
+                        {
+                            var localEvt = evts[evt.Key];
+                            finalEvts.Add(localEvt);
+                            while(evts.Any(x=>x.))
+                        }
+                    }
+                }
+            }
         }
 
+        #region Move
         public void Move(Direction direct)
         {
             // TODO: check if tile solid
@@ -39,7 +104,9 @@ namespace EtrianOdysseyPc.Providers
         {
             // TODO: Move camera according to new location
         }
+        #endregion
 
+        #region Turn
         public void Turn(TurnDirection turnDirect)
         {
             var newDirect = (int)_lookDirection + (int)turnDirect;
@@ -74,22 +141,23 @@ namespace EtrianOdysseyPc.Providers
                     throw new InvalidOperationException($"Unknown LookDirection {_lookDirection}");
             }
         }
+        #endregion
 
         private class Cell
         {
-            public bool IsSolid { get; set; }
+            public bool IsSolid { get; }
 
-            public byte X { get; set; }
-            public byte Y { get; set; }
+            public byte X { get; }
+            public byte Y { get; }
 
-            public Event[] Events { get; set; }
-        }
+            public Cell(byte x, byte y, bool isSolid)
+            {
+                X = x;
+                Y = y;
+                IsSolid = isSolid;
+            }
 
-        private class Event
-        {
-            public ActivateCondition ActivateCondition { get; set; }
-            public EventType EventType { get; set; }
-            public Event ChainedEvent { get; set; }
+            public IEvent[] Events { get; set; }
         }
     }
 

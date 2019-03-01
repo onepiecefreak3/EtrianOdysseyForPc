@@ -13,10 +13,6 @@ namespace EtrianOdysseyPc.Models
         public EOLHeader eolHeader;
         public CellsBody cells;
         public EventHeader evtHeader;
-
-        // Following are events
-        //[VariableLength("eventCount")]
-        //public EventInfo[] events;
     }
 
     [Endianness(ByteOrder = ByteOrder.LittleEndian)]
@@ -57,25 +53,6 @@ namespace EtrianOdysseyPc.Models
         public byte x;
         public byte y;
         public bool isSolid;
-    }
-
-    [Endianness(ByteOrder = ByteOrder.LittleEndian)]
-    public class EventInfo
-    {
-        public byte x;
-        public byte y;
-        public ActivateCondition cond;
-    }
-
-    public enum ActivateCondition : sbyte
-    {
-        Immediate = -1,     // should only be used for chained events
-        OnFlag,
-        OnButtonPress,
-        OnButtonPressNorth,
-        OnButtonPressEast,
-        OnButtonPressSouth,
-        OnButtonPressWest,
     }
 
     public enum EventType : byte

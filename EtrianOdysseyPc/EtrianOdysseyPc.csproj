@@ -59,7 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Events\TextEvent.cs" />
     <Compile Include="Interfaces\IDataContext.cs" />
+    <Compile Include="Interfaces\IEvent.cs" />
     <Compile Include="Interfaces\IUIElement.cs" />
     <Compile Include="Managers\FlagManager.cs" />
     <Compile Include="Models\EOL.cs" />
