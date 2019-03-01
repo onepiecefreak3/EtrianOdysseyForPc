@@ -55,7 +55,24 @@ namespace EtrianOdysseyPc.Providers
 
         private void TurnCamera()
         {
-            // TODO: Turn camera according to new direction
+            // TODO: animate turn
+            switch (_lookDirection)
+            {
+                case Direction.North:
+                    _camera.LookDirection = new Vector3D(0, 0, 1);
+                    break;
+                case Direction.East:
+                    _camera.LookDirection = new Vector3D(1, 0, 0);
+                    break;
+                case Direction.South:
+                    _camera.LookDirection = new Vector3D(0, 0, -1);
+                    break;
+                case Direction.West:
+                    _camera.LookDirection = new Vector3D(-1, 0, 0);
+                    break;
+                default:
+                    throw new InvalidOperationException($"Unknown LookDirection {_lookDirection}");
+            }
         }
 
         private class Cell
@@ -88,25 +105,5 @@ namespace EtrianOdysseyPc.Providers
     {
         Left = -1,
         Right = 1
-    }
-
-    public enum ActivateCondition
-    {
-        Immediate = -1,     // should only be used for chained events
-        OnFlag,
-        OnButtonPress,
-        OnButtonPressNorth,
-        OnButtonPressEast,
-        OnButtonPressSouth,
-        OnButtonPressWest,
-    }
-
-    public enum EventType
-    {
-        Move,
-        Turn,
-        LookDirectionTransform,
-        Text,
-        Decision
     }
 }

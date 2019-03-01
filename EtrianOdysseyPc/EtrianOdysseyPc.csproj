@@ -59,9 +59,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Interfaces\IDataContext.cs" />
+    <Compile Include="Interfaces\IUIElement.cs" />
     <Compile Include="Managers\FlagManager.cs" />
     <Compile Include="Models\EOL.cs" />
     <Compile Include="Providers\LabyrinthProvider.cs" />
+    <Compile Include="UIElements\LabyrinthElement.cs" />
+    <Compile Include="UIElements\MenuElement.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -77,7 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managers\LabyrinthManager.cs" />
-    <Compile Include="ModelContext.cs" />
+    <Compile Include="Models\ModelContext.cs" />
     <Compile Include="Models\EOM.cs" />
     <Compile Include="Managers\ModelManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -109,7 +113,6 @@
     <Content Include="Lib\Komponent.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Contexts\" />
     <Folder Include="Ressources\Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -6,13 +6,14 @@
         xmlns:local="clr-namespace:EtrianOdysseyPc"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
+        Content="{Binding WindowGrid}"
         KeyUp="Grid_KeyUp">
-    <Grid Background="White">
-        <Grid.RowDefinitions>
+    <!--<Grid Background="White">-->
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="20px" />
             <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <TextBox Background="Black" Foreground="White" Text="{Binding LabyrinthCam.Position}" />
+        </Grid.RowDefinitions>-->
+        <!--<TextBox Background="Black" Foreground="White" Text="{Binding LabyrinthCam.Position}" />
         <Viewport3D x:Name="labyrinthView" Grid.Row="2" MouseDown="LabyrinthView_MouseDown">
             <Viewport3D.Camera>
                 <PerspectiveCamera Position="0.5 0.5 -3" LookDirection="0 0 1" FieldOfView="45">
@@ -33,11 +34,11 @@
                                 <DiffuseMaterial Color="YellowGreen"></DiffuseMaterial>
                             </GeometryModel3D.BackMaterial>
                         </GeometryModel3D>
-                        <!--<AmbientLight Color="White"></AmbientLight>-->
+                        --><!--<AmbientLight Color="White"></AmbientLight>--><!--
                         <PointLight Color="White" Position="0 0 0.5"></PointLight>
                     </Model3DGroup>
                 </ModelVisual3D.Content>
             </ModelVisual3D>
-        </Viewport3D>
-    </Grid>
+        </Viewport3D>-->
+    <!--</Grid>-->
 </Window>
