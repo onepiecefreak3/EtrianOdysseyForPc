@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using Komponent.IO;
+using Komponent.IO.Attributes;
 
 namespace EtrianOdysseyPc.Models
 {
@@ -51,7 +52,8 @@ namespace EtrianOdysseyPc.Models
                 mesh.TriangleIndices.Add(facet.vertex3);
             }
 
-            var model = new GeometryModel3D(mesh, new DiffuseMaterial(Brushes.YellowGreen));
+            var model = new GeometryModel3D(mesh, new DiffuseMaterial(Brushes.AliceBlue));
+            model.BackMaterial = new DiffuseMaterial(Brushes.AliceBlue);
 
             return model;
         }

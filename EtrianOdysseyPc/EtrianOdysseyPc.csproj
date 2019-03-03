@@ -82,10 +82,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Managers\LabyrinthManager.cs" />
     <Compile Include="Models\ModelContext.cs" />
     <Compile Include="Models\EOM.cs" />
-    <Compile Include="Managers\ModelManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

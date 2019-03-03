@@ -30,13 +30,17 @@ namespace EtrianOdysseyPc
     public partial class MainWindow : Window
     {
         private IUiElement _uiElement;
+        private ModelContext _modContext;
 
         public MainWindow()
         {
-            _uiElement = new MenuElement();
+            _uiElement = new LabyrinthElement("testLab.eol");
             _uiElement.NewUiElement += _uiElement_NewUiElement;
 
+            SetupView();
+
             DataContext = _uiElement.DataContext;
+
             InitializeComponent();
 
             //EventManager.RegisterRoutedEvent("Loaded", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Viewport3D));
@@ -75,6 +79,50 @@ namespace EtrianOdysseyPc
             //labyrinthView.Triggers.Add(loadedTrigger);
         }
 
+        private void SetupView()
+        {
+            _modContext = new ModelContext();
+
+            _modContext.WindowGrid.Background = Brushes.Wheat;
+            _modContext.WindowGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(20) });
+            _modContext.WindowGrid.RowDefinitions.Add(new RowDefinition()
+            {
+                Height = new GridLength(1, GridUnitType.Star)
+            });
+
+            var textBox = new TextBox() { Text = "Test" };
+            Grid.SetRow(textBox, 0);
+            _modContext.WindowGrid.Children.Add(textBox);
+
+            var viewport = new Viewport3D();
+            Grid.SetRow(viewport, 1);
+            _modContext.WindowGrid.Children.Add(viewport);
+
+            viewport.Camera = new PerspectiveCamera(new Point3D(5, 1, 5), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), 60);
+
+            var modelVisual1 = new ModelVisual3D();
+            var mesh = new MeshGeometry3D();
+            mesh.Positions.Add(new Point3D(0, 0, 0));
+            mesh.Positions.Add(new Point3D(10, 0, 0));
+            mesh.Positions.Add(new Point3D(0, 0, 10));
+            mesh.Positions.Add(new Point3D(10, 0, 10));
+            mesh.TriangleIndices.Add(0);
+            mesh.TriangleIndices.Add(1);
+            mesh.TriangleIndices.Add(2);
+            mesh.TriangleIndices.Add(2);
+            mesh.TriangleIndices.Add(1);
+            mesh.TriangleIndices.Add(3);
+            var model = new GeometryModel3D(mesh, new DiffuseMaterial(Brushes.AliceBlue));
+            model.BackMaterial = new DiffuseMaterial(Brushes.AliceBlue);
+            modelVisual1.Content = model;
+            viewport.Children.Add(modelVisual1);
+
+            var modelVisual2 = new ModelVisual3D();
+            var light = new AmbientLight(Colors.White);
+            modelVisual2.Content = light;
+            viewport.Children.Add(modelVisual2);
+        }
+
         private void _uiElement_NewUiElement(object sender, NewUiElementEventArgs e)
         {
             _uiElement = e.UiElement;
@@ -102,7 +150,15 @@ namespace EtrianOdysseyPc
 
         private void Grid_KeyUp(object sender, KeyEventArgs e)
         {
-            Task.Run(() => _uiElement.PressKey(e));
+            //if (e.Key == Key.A)
+            //{
+            //    DataContext = _uiElement.DataContext;
+            //}
+            //else if (e.Key == Key.S)
+            //{
+            //    DataContext = _modContext;
+            //}
+            _uiElement.PressKey(e);
 
             //if (e.Key == Key.Return)
             //{

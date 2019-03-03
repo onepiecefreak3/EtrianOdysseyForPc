@@ -39,10 +39,7 @@ namespace EtrianOdysseyPc.UIElements
         {
             if (keyEventArgs.Key == Key.A)
             {
-                typeof(TextBox).GetMember("Text").In.GetProperty("Text").SetValue(_text, "Load Labyrinth");
-                //_text.Text = "Load Labyrinth";
-                Thread.Sleep(1000);
-                OnLoadNewElement(new LabyrinthElement());
+                OnLoadNewElement(new LabyrinthElement("testLab.eol"));
             }
         }
 
