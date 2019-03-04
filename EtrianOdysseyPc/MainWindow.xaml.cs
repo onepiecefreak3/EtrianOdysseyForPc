@@ -166,6 +166,11 @@ namespace EtrianOdysseyPc
             //}
         }
 
+        private void Grid_KeyDown(object sender, KeyEventArgs e)
+        {
+            _uiElement.PressKey(e);
+        }
+
         //private void Storyboard_Completed(object sender, EventArgs e)
         //{
         //    Trace.WriteLine("SB completed.");

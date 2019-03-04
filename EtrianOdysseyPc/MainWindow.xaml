@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:EtrianOdysseyPc"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-    Content="{Binding WindowGrid}"
-        KeyUp="Grid_KeyUp">
+        Content="{Binding WindowGrid}"
+        KeyUp="Grid_KeyUp"
+        KeyDown="Grid_KeyDown">
     <!--<Grid Background="Wheat">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>

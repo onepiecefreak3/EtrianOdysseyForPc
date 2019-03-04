@@ -29,8 +29,8 @@ namespace EtrianOdysseyPc.Providers
         private Viewport3D _labView;
         private PerspectiveCamera _camera;
 
-        public int TurnSpeed { get; set; } = 500;
-        public int MoveSpeed { get; set; } = 500;
+        public int TurnSpeed { get; set; } = 250;
+        public int MoveSpeed { get; set; } = 250;
 
         public LabyrinthProvider(string labFile, Viewport3D labView)
         {
@@ -48,7 +48,7 @@ namespace EtrianOdysseyPc.Providers
         {
             Vector3D lookDir = GetLookDirectionVector();
 
-            _camera = new PerspectiveCamera(GetTilePoint(_entryX, _entryY) + new Vector3D(5, 1, 5), lookDir, new Vector3D(0, 1, 0), 60);
+            _camera = new PerspectiveCamera(GetTilePoint(_entryX, _entryY) + new Vector3D(5, 3, 5), lookDir, new Vector3D(0, 1, 0), 90);
             _labView.Camera = _camera;
 
             var modelVisual = new ModelVisual3D();
@@ -257,7 +257,7 @@ namespace EtrianOdysseyPc.Providers
 
         private void MoveCamera()
         {
-            var anim = new Point3DAnimation(GetTilePoint(CurrentCell.X, CurrentCell.Y) + new Vector3D(5, 1, 5), new Duration(TimeSpan.FromMilliseconds(MoveSpeed)));
+            var anim = new Point3DAnimation(GetTilePoint(CurrentCell.X, CurrentCell.Y) + new Vector3D(5, 3, 5), new Duration(TimeSpan.FromMilliseconds(MoveSpeed)));
             anim.Completed += Anim_Completed1;
 
             _camera.BeginAnimation(PerspectiveCamera.PositionProperty, anim);
