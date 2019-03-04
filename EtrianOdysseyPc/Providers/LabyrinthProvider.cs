@@ -9,8 +9,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 
 namespace EtrianOdysseyPc.Providers
@@ -26,6 +28,9 @@ namespace EtrianOdysseyPc.Providers
 
         private Viewport3D _labView;
         private PerspectiveCamera _camera;
+
+        public int TurnSpeed { get; set; } = 500;
+        public int MoveSpeed { get; set; } = 500;
 
         public LabyrinthProvider(string labFile, Viewport3D labView)
         {
@@ -232,11 +237,16 @@ namespace EtrianOdysseyPc.Providers
 
         private void MoveInternal(int newx, int newy)
         {
+            if (!_moveFinished || !_turnFinished)
+                return;
+
             var newCell = _cells.FirstOrDefault(x => x.X == newx && x.Y == newy);
             if (newCell == null) return;
 
             // Check if cell is solid
             if (newCell.IsSolid) return;
+
+            _moveFinished = false;
 
             // Move to new cell
             CurrentCell = newCell;
@@ -247,13 +257,28 @@ namespace EtrianOdysseyPc.Providers
 
         private void MoveCamera()
         {
-            _camera.Position = GetTilePoint(CurrentCell.X, CurrentCell.Y) + new Vector3D(5, 1, 5);
+            var anim = new Point3DAnimation(GetTilePoint(CurrentCell.X, CurrentCell.Y) + new Vector3D(5, 1, 5), new Duration(TimeSpan.FromMilliseconds(MoveSpeed)));
+            anim.Completed += Anim_Completed1;
+
+            _camera.BeginAnimation(PerspectiveCamera.PositionProperty, anim);
         }
+
+        private void Anim_Completed1(object sender, EventArgs e)
+        {
+            _moveFinished = true;
+        }
+
+        private bool _moveFinished = true;
         #endregion
 
         #region Turn
         public void Turn(TurnDirection turnDirect)
         {
+            if (!_turnFinished || !_moveFinished)
+                return;
+
+            _turnFinished = false;
+
             var newDirect = (int)LookDirection + (int)turnDirect;
             if (newDirect < 0)
                 newDirect = 3;
@@ -267,8 +292,18 @@ namespace EtrianOdysseyPc.Providers
 
         private void TurnCamera()
         {
-            _camera.LookDirection = GetLookDirectionVector();
+            var anim = new Vector3DAnimation(GetLookDirectionVector(), new Duration(TimeSpan.FromMilliseconds(TurnSpeed)));
+            anim.Completed += Anim_Completed;
+
+            _camera.BeginAnimation(PerspectiveCamera.LookDirectionProperty, anim);
         }
+
+        private void Anim_Completed(object sender, EventArgs e)
+        {
+            _turnFinished = true;
+        }
+
+        private bool _turnFinished = true;
         #endregion
 
         public class Cell
