@@ -52,6 +52,10 @@
     <Reference Include="HelixToolkit.Wpf.SharpDX.Assimp, Version=2.6.1.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
       <HintPath>..\packages\HelixToolkit.SharpDX.Assimp.2.6.1\lib\net45\HelixToolkit.Wpf.SharpDX.Assimp.dll</HintPath>
     </Reference>
+    <Reference Include="Komponent, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Komponent.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
     </Reference>
@@ -95,15 +99,28 @@
     </ApplicationDefinition>
     <Compile Include="DataContexts\ModelContext.cs" />
     <Compile Include="Managers\FlagManager.cs" />
+    <Compile Include="Managers\GlobalSettingsManager.cs" />
     <Compile Include="Managers\KeyBindingManager.cs" />
+    <Compile Include="Managers\LabyrinthManager.cs" />
     <Compile Include="Models\KeyBindings\MenuBindings.cs" />
+    <Compile Include="Models\Labyrinth\Coordinate.cs" />
+    <Compile Include="Models\Labyrinth\Format\LabCell.cs" />
+    <Compile Include="Models\Labyrinth\Format\LabCellHeader.cs" />
+    <Compile Include="Models\Labyrinth\Format\LabCells.cs" />
+    <Compile Include="Models\Labyrinth\Format\LabEvent.cs" />
+    <Compile Include="Models\Labyrinth\Format\LabEventHeader.cs" />
+    <Compile Include="Models\Labyrinth\Format\LabEvents.cs" />
+    <Compile Include="Models\Labyrinth\Format\LabFile.cs" />
+    <Compile Include="Models\Labyrinth\Format\LabHeader.cs" />
+    <Compile Include="Models\Labyrinth\Format\LabModelHeader.cs" />
+    <Compile Include="Models\Labyrinth\Format\LabModels.cs" />
+    <Compile Include="Models\Labyrinth\Format\LabString.cs" />
     <Compile Include="UiElements\GameChoiceElement.cs" />
     <Compile Include="UiElements\TownElement.cs" />
-	<Compile Include="Cameras\LabyrinthCamera.cs" />
-	<Compile Include="Models\KeyBindings\LabyrinthBindings.cs" />
-	<Compile Include="Models\Camera\MoveDirection.cs" />
-	<Compile Include="Models\Camera\TurnDirection.cs" />
-	<Compile Include="UiElements\LabyrinthElement.cs" />
+    <Compile Include="Cameras\PlayerCamera.cs" />
+    <Compile Include="Models\KeyBindings\LabyrinthBindings.cs" />
+    <Compile Include="Models\Camera\LookDirection.cs" />
+    <Compile Include="UiElements\LabyrinthElement.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -148,6 +165,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Providers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\Komponent.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\AssimpNet.4.1.0\build\AssimpNet.targets" Condition="Exists('..\packages\AssimpNet.4.1.0\build\AssimpNet.targets')" />
