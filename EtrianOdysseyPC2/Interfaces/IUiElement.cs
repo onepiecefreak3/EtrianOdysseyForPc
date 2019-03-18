@@ -12,7 +12,7 @@ namespace EtrianOdysseyPC2.Interfaces
     interface IUiElement
     {
         string Name { get; }
-        ModelContext DataContext { get; }
+        ElementContext ElementContext { get; }
 
         event SwitchUiElementEventHandler SwitchUiElement;
 

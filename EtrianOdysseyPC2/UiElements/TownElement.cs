@@ -19,20 +19,20 @@ namespace EtrianOdysseyPC2.UiElements
 
         public string Name => "Town";
 
-        public ModelContext DataContext { get; private set; }
+        public ElementContext ElementContext { get; private set; }
 
         public event SwitchUiElementEventHandler SwitchUiElement;
 
         public TownElement()
         {
-            DataContext = new ModelContext();
+            ElementContext = new ElementContext();
             SetupContext();
         }
 
         private void SetupContext()
         {
             // Setup rows
-            DataContext.Grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            ElementContext.Grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
             // Setup view
             var viewbox = new Viewbox();
@@ -40,7 +40,7 @@ namespace EtrianOdysseyPC2.UiElements
 
             viewbox.Child = _canvas;
             Grid.SetRow(viewbox, 0);
-            DataContext.Grid.Children.Add(viewbox);
+            ElementContext.Grid.Children.Add(viewbox);
         }
 
         public void KeyPress(KeyEventArgs e)

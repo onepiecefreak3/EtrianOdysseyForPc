@@ -24,10 +24,11 @@ namespace EtrianOdysseyPC2
     public partial class MainWindow : Window
     {
         IUiElement _currentUiElement = new GameChoiceElement();
-        ModelContext _context;
+        ModelContext _mainContext = new ModelContext();
 
         public MainWindow()
         {
+            DataContext = _mainContext;
             SetupUiElement(_currentUiElement);
 
             InitializeComponent();
@@ -35,18 +36,21 @@ namespace EtrianOdysseyPC2
 
         private void SetupUiElement(IUiElement element)
         {
-            element.SwitchUiElement += Element_SwitchUiElement;
+            _currentUiElement = element;
+            _currentUiElement.SwitchUiElement += Element_SwitchUiElement;
 
-            _context = element.DataContext;
+            _mainContext.Grid = element.ElementContext.Grid;
         }
 
         private void Element_SwitchUiElement(object sender, EventHandlers.SwitchUiElementEventArgs e)
         {
+            Logging.Logger.Global.Information(_mainContext, $"Switch to UiElement {e.UiElement.Name}");
             SetupUiElement(e.UiElement);
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            Logging.Logger.Global.Information(_mainContext, $"Key pressed: {e.Key}");
             _currentUiElement.KeyPress(e);
         }
     }

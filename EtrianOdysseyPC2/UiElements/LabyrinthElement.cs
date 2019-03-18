@@ -26,7 +26,7 @@ namespace EtrianOdysseyPC2.UiElements
 
         public string Name => "Labyrinth";
 
-        public ModelContext DataContext { get; private set; }
+        public ElementContext ElementContext { get; private set; }
 
         public event SwitchUiElementEventHandler SwitchUiElement;
 
@@ -39,14 +39,14 @@ namespace EtrianOdysseyPC2.UiElements
 
         private void SetupContext()
         {
-            DataContext = new ModelContext();
+            ElementContext = new ElementContext();
 
-            DataContext.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            DataContext.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            ElementContext.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            ElementContext.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
             _viewport = new Viewport3DX();
             Grid.SetColumn(_viewport, 0);
-            DataContext.Grid.Children.Add(_viewport);
+            ElementContext.Grid.Children.Add(_viewport);
 
             var entryCoord = _labManager.EntryCoord;
             _camera = new PlayerCamera(entryCoord.X, entryCoord.Y, _labManager.EntryLookDirection, 10);
